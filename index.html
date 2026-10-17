@@ -839,28 +839,45 @@
 
     submitBtn.disabled = true;
     submitBtn.textContent = "送出中…";
+    let res, data;
     try {
-      const res = await fetch(FORM_ENDPOINT, {
+      res = await fetch(FORM_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify(payload)
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || String(data.success) !== "true") throw new Error(data.message || res.status);
+      data = await res.json().catch(() => ({}));
+    } catch (err) {
+      showFormError("預約沒有送出，因為連不上預約服務。請確認網路連線，你填的內容都還在，再按一次「送出預約」即可。");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "送出預約";
+      return;
+    }
+    submitBtn.disabled = false;
+    submitBtn.textContent = "送出預約";
 
+    if (res.ok && String(data.success) === "true") {
       document.getElementById("doneName").textContent = payload["姓名"];
       document.getElementById("doneEmail").textContent = payload.email;
       form.hidden = true;
       done.hidden = false;
       document.getElementById("doneTitle").focus();
-    } catch (err) {
-      formError.textContent = "預約沒有送出，可能是網路連線中斷。你填的內容都還在，請稍後再按一次「送出預約」。";
-      formError.hidden = false;
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "送出預約";
+      return;
+    }
+    const reason = String(data.message || "");
+    console.warn("FormSubmit rejected the booking:", res.status, reason);
+    if (/activat/i.test(reason)) {
+      showFormError("預約表單尚未啟用，這次的內容沒有寄出。網站管理者完成啟用後就能正常預約，請稍後再試。");
+    } else {
+      showFormError("預約沒有送出（預約服務回覆：" + (reason || "錯誤 " + res.status) + "）。你填的內容都還在，請稍後再試一次。");
     }
   });
+
+  function showFormError(msg) {
+    formError.textContent = msg;
+    formError.hidden = false;
+  }
+
 
   document.getElementById("year").textContent = new Date().getFullYear();
 })();
