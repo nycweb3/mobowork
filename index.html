@@ -202,10 +202,6 @@
   .contact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 7vw, 104px); align-items: start; }
   .contact h2 { font-size: var(--fs-3); }
   .contact-lede { margin-top: 16px; color: var(--ink-soft); font-size: 1.0625rem; max-width: 24em; }
-  .email-box { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .email-link { font-family: var(--serif); font-weight: 700; font-size: clamp(1.25rem, 2.6vw, 1.75rem); text-decoration: none; border-bottom: 2px solid var(--brass); word-break: break-all; line-height: 1.4; }
-  .copy-btn { min-height: 40px; padding: 0 16px; font-size: .875rem; }
-  .copy-status { font-size: .875rem; color: var(--celadon); min-height: 1.5em; margin-top: 10px; }
   .checklist { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: clamp(24px, 3.4vw, 36px); }
   .checklist h3 { font-size: 1.3125rem; }
   .checklist > p { margin-top: 8px; font-size: .9375rem; color: var(--ink-soft); }
@@ -217,8 +213,6 @@
   .checklist .btn { margin-top: 28px; width: 100%; }
 
   .book-main { margin-top: 32px; }
-  .alt-contact { margin-top: 36px; font-size: .875rem; color: var(--ink-soft); }
-  .alt-contact + .email-box { margin-top: 8px; }
 
   /* ---------- Booking dialog ---------- */
   .book {
@@ -257,7 +251,9 @@
   .book-done > svg { color: var(--celadon); }
   .book-done h3 { font-size: 1.3125rem; margin-top: 12px; outline: none; }
   .book-done p { margin-top: 8px; font-size: .9375rem; color: var(--ink-soft); }
-  .book-done textarea { width: 100%; margin-top: 16px; font: .875rem/1.7 var(--sans); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; resize: none; }
+  .form-error { margin-top: 8px; padding: 12px 14px; border-radius: 10px; background: #F6E7E3; color: #8A2F21; font-size: .9375rem; line-height: 1.6; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .btn[disabled] { opacity: .6; cursor: progress; }
   body.dialog-open { overflow: hidden; }
 
   footer.site { border-top: 1px solid var(--line); padding: 28px 0; font-size: .8125rem; color: var(--ink-soft); }
@@ -531,12 +527,6 @@
         <h2 id="contact-title">有一個決定，想多看一個角度？</h2>
         <p class="contact-lede">填寫預約表單，留下你方便的時間與想討論的事。我會以 Email 回覆適合的諮詢方式與安排。</p>
         <button class="btn btn-solid book-main" type="button" data-book>填寫預約表單</button>
-        <p class="alt-contact">也可以直接寫信給我</p>
-        <div class="email-box">
-          <a class="email-link" id="emailLink" href="mailto:nycweb9@protonmail.com?subject=%E8%AB%AE%E8%A9%A2%E9%A0%90%E7%B4%84">nycweb9@protonmail.com</a>
-          <button class="btn btn-ghost copy-btn" id="copyBtn" type="button">複製 Email</button>
-        </div>
-        <p class="copy-status" id="copyStatus" role="status"></p>
       </div>
 
       <div class="checklist">
@@ -625,22 +615,26 @@
         <p class="err" id="fNeed-err"></p>
       </div>
 
+      <div class="hp" aria-hidden="true">
+        <label for="fHoney">請勿填寫此欄</label>
+        <input id="fHoney" name="_honey" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <p class="form-error" id="formError" role="alert" hidden></p>
+
       <div class="book-actions">
         <button class="btn btn-ghost" type="button" data-close>取消</button>
-        <button class="btn btn-solid" type="submit">送出預約</button>
+        <button class="btn btn-solid" type="submit" id="submitBtn">送出預約</button>
       </div>
     </form>
 
     <div class="book-done" id="bookDone" hidden>
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6"/></svg>
-      <h3 tabindex="-1" id="doneTitle">預約內容已帶入你的郵件程式</h3>
-      <p>請在郵件程式中按下寄出，預約才算完成。如果郵件程式沒有開啟，請複製下方內容，寄到 nycweb9@protonmail.com。</p>
-      <textarea id="doneText" rows="7" readonly aria-label="預約內容"></textarea>
+      <h3 tabindex="-1" id="doneTitle">預約已送出</h3>
+      <p>謝謝你，<span id="doneName"></span>。我會以 Email 回覆確認諮詢時間，回覆會寄到 <span id="doneEmail"></span>。</p>
       <div class="book-actions">
-        <button class="btn btn-ghost" type="button" id="copyDone">複製預約內容</button>
         <button class="btn btn-solid" type="button" data-close>完成</button>
       </div>
-      <p class="copy-status" id="doneStatus" role="status"></p>
     </div>
   </div>
 </dialog>
@@ -753,12 +747,13 @@
   });
 
   // ----- Booking dialog -----
-  const EMAIL = "nycweb9@protonmail.com";
+  // FormSubmit forwards each booking to this inbox.
+  const FORM_ENDPOINT = "https://formsubmit.co/ajax/nycweb9@protonmail.com";
   const dlg = document.getElementById("bookDialog");
   const form = document.getElementById("bookForm");
   const done = document.getElementById("bookDone");
-  const doneText = document.getElementById("doneText");
-  const doneStatus = document.getElementById("doneStatus");
+  const formError = document.getElementById("formError");
+  const submitBtn = document.getElementById("submitBtn");
   const dateInput = document.getElementById("fDate");
   let lastTrigger = null;
 
@@ -773,6 +768,7 @@
     menuBtn.setAttribute("aria-expanded", "false");
     menuBtn.textContent = "選單";
     if (!done.hidden) form.reset();
+    formError.hidden = true;
     form.hidden = false;
     done.hidden = true;
     if (typeof dlg.showModal === "function") {
@@ -814,52 +810,47 @@
     el.addEventListener("input", () => { if (el.getAttribute("aria-invalid") === "true") check(id); });
   });
 
-  form.addEventListener("submit", e => {
+  form.addEventListener("submit", async e => {
     e.preventDefault();
+    formError.hidden = true;
     const bad = Object.keys(RULES).filter(id => !check(id));
     if (bad.length) { document.getElementById(bad[0]).focus(); return; }
 
     const f = Object.fromEntries(new FormData(form));
-    const subject = "諮詢預約｜" + f.name.trim();
-    const body = [
-      "姓名：" + f.name.trim(),
-      "Email：" + f.email.trim(),
-      "希望時間：" + f.date + "　" + f.slot,
-      "諮詢服務：" + (f.service || "還不確定，請老師建議"),
-      "",
-      "訴求：",
-      f.need.trim()
-    ].join("\n");
+    const payload = {
+      _subject: "諮詢預約｜" + f.name.trim(),
+      _template: "table",
+      _honey: f._honey,
+      "姓名": f.name.trim(),
+      email: f.email.trim(),
+      "希望時間": f.date + "　" + f.slot,
+      "諮詢服務": f.service || "還不確定，請老師建議",
+      "訴求": f.need.trim()
+    };
 
-    doneText.value = "主旨：" + subject + "\n\n" + body;
-    form.hidden = true;
-    done.hidden = false;
-    document.getElementById("doneTitle").focus();
-    location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-  });
-
-  document.getElementById("copyDone").addEventListener("click", async () => {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "送出中…";
     try {
-      await navigator.clipboard.writeText(doneText.value);
-      doneStatus.textContent = "已複製預約內容";
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || String(data.success) !== "true") throw new Error(data.message || res.status);
+
+      document.getElementById("doneName").textContent = payload["姓名"];
+      document.getElementById("doneEmail").textContent = payload.email;
+      form.hidden = true;
+      done.hidden = false;
+      document.getElementById("doneTitle").focus();
     } catch (err) {
-      doneText.select();
-      doneStatus.textContent = "請按 Ctrl+C 或 ⌘+C 複製已選取的內容";
+      formError.textContent = "預約沒有送出，可能是網路連線中斷。你填的內容都還在，請稍後再按一次「送出預約」。";
+      formError.hidden = false;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "送出預約";
     }
-  });
-
-  // ----- Copy email -----
-  const status = document.getElementById("copyStatus");
-  document.getElementById("copyBtn").addEventListener("click", async () => {
-    const email = "nycweb9@protonmail.com";
-    try {
-      await navigator.clipboard.writeText(email);
-      status.textContent = "已複製 Email";
-    } catch (e) {
-      status.textContent = "無法自動複製，請手動選取：" + email;
-    }
-    clearTimeout(status._t);
-    status._t = setTimeout(() => { status.textContent = ""; }, 3000);
   });
 
   document.getElementById("year").textContent = new Date().getFullYear();
