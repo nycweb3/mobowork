@@ -597,9 +597,16 @@
           <label for="fSlot">希望時段</label>
           <select id="fSlot" name="slot" required>
             <option value="">請選擇</option>
-            <option>上午 10:00–12:00</option>
-            <option>下午 14:00–17:00</option>
-            <option>晚上 19:00–21:00</option>
+            <option>11:00–12:00</option>
+            <option>12:00–13:00</option>
+            <option>13:00–14:00</option>
+            <option>14:00–15:00</option>
+            <option>15:00–16:00</option>
+            <option>16:00–17:00</option>
+            <option>17:00–18:00</option>
+            <option>18:00–19:00</option>
+            <option>19:00–20:00</option>
+            <option>20:00–21:00</option>
           </select>
           <p class="err" id="fSlot-err"></p>
         </div>
@@ -803,7 +810,7 @@
     fEmail: v => !v.trim() ? "請填寫 Email" : (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? "" : "Email 格式不正確，例如 name@example.com"),
     fDate: v => !v ? "請選擇希望日期" : (v < dateInput.min ? "請選擇今天或之後的日期" : ""),
     fSlot: v => v ? "" : "請選擇希望時段",
-    fNeed: v => v.trim().length >= 10 ? "" : "請用至少 10 個字描述你的訴求"
+    fNeed: v => v.trim() ? "" : "請填寫你的訴求"
   };
   function check(id) {
     const el = document.getElementById(id);
