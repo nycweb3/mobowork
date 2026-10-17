@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>安迪｜技術命理顧問</title>
+<meta name="description" content="安迪老師，Mobowork 創辦人。結合十年以上科技、數據與 AI 實戰經驗，以塔羅、八字、紫微與易經，陪伴個人與企業主看清時機、做出關鍵決策。">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 35 35'><path fill='%231E2A44' d='M0 0h10v3h-10zM0 0h3v10h-3zM7 0h3v13h-3zM0 7h6v3h-6zM11 7h9v3h-9zM25 7h6v3h-6zM28 7h3v10h-3zM18 14h13v3h-13zM0 14h13v3h-13zM0 14h3v10h-3zM0 21h6v3h-6zM11 21h9v3h-9zM25 21h6v3h-6zM28 21h3v10h-3zM21 28h10v3h-10zM21 18h3v13h-3zM21 0h3v13h-3zM14 0h10v3h-10zM14 0h3v6h-3zM14 11h3v9h-3zM14 25h3v6h-3zM7 28h10v3h-10zM7 18h3v13h-3z'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --porcelain: #F2F3EF;
+    --mist: #DFE5E0;
+    --celadon: #7E9A8C;
+    --ink: #1E2A44;
+    --ink-soft: #46516A;
+    --brass: #A07B32;
+    --brass-light: #D9BE7E;
+    --line: rgba(30, 42, 68, .16);
+
+    --serif: "Noto Serif TC", "Songti TC", serif;
+    --sans: "Noto Sans TC", "PingFang TC", system-ui, sans-serif;
+
+    --fs-0: 1rem;
+    --fs-1: 1.3125rem;
+    --fs-2: 1.75rem;
+    --fs-3: 2.375rem;
+    --fs-hero: clamp(2rem, 4.3vw, 3.75rem);
+
+    --gutter: clamp(16px, 5vw, 64px);
+    --max: 1180px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    margin: 0;
+    background: var(--porcelain);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--fs-0);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 700; line-height: 1.3; margin: 0; letter-spacing: .02em; text-wrap: balance; }
+  blockquote p, .hero-lede, .section-head p { text-wrap: pretty; }
+  p { margin: 0; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  section { padding: clamp(72px, 11vw, 136px) 0; }
+  .section-head { max-width: 34em; margin-bottom: clamp(40px, 6vw, 64px); }
+  .section-head h2 { font-size: var(--fs-3); }
+  .section-head p { margin-top: 16px; color: var(--ink-soft); font-size: 1.0625rem; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(242, 243, 239, .9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s;
+  }
+  .nav.scrolled { border-bottom-color: var(--line); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { font-family: var(--serif); font-weight: 700; font-size: 1.125rem; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  .brand-mark { display: block; width: 31px; height: 31px; color: var(--ink); flex-shrink: 0; }
+  .brand small { font-family: var(--sans); font-weight: 400; font-size: .8125rem; color: var(--ink-soft); }
+  .nav-links { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: .9375rem; }
+  .nav-links a { text-decoration: none; color: var(--ink-soft); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links .nav-cta { color: var(--ink); font-weight: 500; border-bottom: 1.5px solid var(--brass); }
+  .menu-btn { display: none; background: none; border: 0; padding: 8px; margin-right: -8px; cursor: pointer; color: var(--ink); font: inherit; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 48px; padding: 0 26px;
+    font: 500 1rem/1 var(--sans); text-decoration: none; cursor: pointer;
+    border: 1.5px solid var(--ink); border-radius: 999px;
+    transition: background .2s, color .2s;
+  }
+  .btn-solid { background: var(--ink); color: var(--porcelain); }
+  .btn-solid:hover { background: #2C3B5E; }
+  .btn-ghost { background: transparent; color: var(--ink); }
+  .btn-ghost:hover { background: var(--mist); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: clamp(48px, 8vw, 104px) 0 clamp(72px, 10vw, 120px); }
+  .hero .wrap { display: grid; grid-template-columns: 1.2fr .8fr; gap: clamp(40px, 6vw, 88px); align-items: center; }
+  .hero-role { font-size: .9375rem; color: var(--celadon); font-weight: 500; margin-bottom: 20px; }
+  .hero h1 { font-size: var(--fs-hero); font-weight: 900; line-height: 1.22; letter-spacing: .01em; }
+  .hero h1 span { display: block; }
+  @media (min-width: 721px) { .hero h1 span { white-space: nowrap; } }
+  .hero-lede { margin-top: 28px; max-width: 30em; font-size: 1.125rem; color: var(--ink-soft); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+  /* Hexagram instrument */
+  .gua {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: clamp(24px, 3.4vw, 36px);
+  }
+  .gua-lines { display: flex; flex-direction: column-reverse; gap: 14px; }
+  .gua-row { display: grid; grid-template-columns: 2.6em 1fr 1.2em; align-items: center; gap: 14px; font-size: .8125rem; color: var(--ink-soft); }
+  .gua-row .bit { text-align: right; font-variant-numeric: tabular-nums; color: var(--celadon); font-weight: 500; }
+  .bar { position: relative; height: 18px; }
+  .bar::before, .bar::after {
+    content: ""; position: absolute; top: 0; bottom: 0; background: var(--ink); border-radius: 2px;
+    transform-origin: left center;
+    transition: left .5s cubic-bezier(.6,0,.2,1), right .5s cubic-bezier(.6,0,.2,1), background .4s;
+  }
+  .bar::before { left: 0; right: 0; }
+  .bar::after { left: 100%; right: 0; }
+  .bar.yin::before { right: 56%; }
+  .bar.yin::after { left: 56%; }
+  .gua.casting .bar::before, .gua.casting .bar::after { animation: draw .6s cubic-bezier(.6,0,.2,1) both; animation-delay: calc(var(--i) * 140ms); }
+  .bar.changed::before, .bar.changed::after { background: var(--brass); }
+  @keyframes draw { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+
+  .gua-read { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+  .gua-name { font-family: var(--serif); font-size: var(--fs-2); font-weight: 700; line-height: 1.2; }
+  .gua-meta { font-size: .8125rem; color: var(--ink-soft); margin: 4px 0; }
+  .gua-code { font-variant-numeric: tabular-nums; letter-spacing: .12em; }
+  .cast-btn { flex-shrink: 0; min-height: 40px; padding: 0 18px; font-size: .875rem; }
+  .gua-note { margin-top: 14px; font-size: .8125rem; color: var(--ink-soft); }
+
+  /* ---------- About ---------- */
+  .about { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .about .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(40px, 7vw, 104px); align-items: start; }
+  .about-portrait {
+    aspect-ratio: 4 / 5; border-radius: 20px; overflow: hidden;
+    background: var(--ink); color: var(--porcelain);
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 28px;
+    position: relative;
+  }
+  .about-portrait .big { position: absolute; top: 18px; right: 22px; font-family: var(--serif); font-weight: 900; font-size: clamp(5rem, 11vw, 8.5rem); line-height: 1; color: rgba(217, 190, 126, .9); }
+  .about-portrait .name { font-family: var(--serif); font-size: var(--fs-2); font-weight: 700; }
+  .about-portrait .title { font-size: .9375rem; opacity: .75; }
+  .about h2 { font-size: var(--fs-3); max-width: 14em; }
+  .about-body { margin-top: 28px; display: grid; gap: 20px; max-width: 36em; font-size: 1.0625rem; color: var(--ink-soft); }
+  .about-body strong { color: var(--ink); font-weight: 500; }
+  .pair { margin-top: 40px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; max-width: 36em; }
+  .pair div { padding: 20px 22px; }
+  .pair h3 { font-size: 1.0625rem; margin-bottom: 6px; }
+  .pair p { font-size: .9375rem; color: var(--ink-soft); line-height: 1.7; }
+  .pair .plus { display: grid; place-items: center; padding: 0 4px; background: var(--mist); font-family: var(--serif); font-size: 1.25rem; color: var(--brass); }
+
+  /* ---------- Services ---------- */
+  .services-list { display: grid; gap: 0; border-top: 1px solid var(--ink); }
+  .service {
+    display: grid; grid-template-columns: 88px 1.1fr 1fr; gap: clamp(20px, 4vw, 56px);
+    padding: clamp(32px, 4.5vw, 48px) 0; border-bottom: 1px solid var(--line);
+  }
+  .service-glyph { width: 64px; height: 64px; color: var(--ink); }
+  .service h3 { font-size: var(--fs-2); }
+  .service .sub { margin-top: 6px; font-family: var(--serif); font-weight: 500; color: var(--brass); font-size: 1.0625rem; }
+  .service .desc { margin-top: 14px; color: var(--ink-soft); max-width: 28em; }
+  .service-gets { background: #fff; border-radius: 14px; padding: 22px 24px; align-self: start; border: 1px solid var(--line); }
+  .service-gets h4 { margin: 0 0 10px; font-size: .9375rem; font-weight: 700; }
+  .service-gets ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: .9375rem; color: var(--ink-soft); line-height: 1.7; }
+  .service-gets li { padding-left: 18px; position: relative; }
+  .service-gets li::before { content: ""; position: absolute; left: 0; top: .72em; width: 8px; height: 2px; background: var(--celadon); }
+  .service-gets .who { margin-top: 14px; font-size: .8125rem; color: var(--celadon); font-weight: 500; }
+
+  /* ---------- Process ---------- */
+  .process { background: var(--mist); }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; counter-reset: s; position: relative; }
+  .step { padding: 0 24px 0 0; position: relative; }
+  .step-num {
+    width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--porcelain); border: 1.5px solid var(--ink);
+    font-family: var(--serif); font-weight: 700; font-size: 1.0625rem; position: relative; z-index: 1;
+  }
+  .step::before { content: ""; position: absolute; top: 22px; left: 44px; right: 0; height: 1.5px; background: var(--ink); opacity: .25; }
+  .step:last-child::before { display: none; }
+  .step:last-child .step-num { background: var(--ink); color: var(--brass-light); }
+  .step h3 { font-size: 1.3125rem; margin-top: 22px; }
+  .step p { margin-top: 10px; color: var(--ink-soft); font-size: .9375rem; line-height: 1.75; max-width: 16em; }
+  .loop-note { margin-top: 48px; font-size: .9375rem; color: var(--ink-soft); display: flex; gap: 12px; align-items: center; }
+  .loop-note svg { flex-shrink: 0; color: var(--brass); }
+
+  /* ---------- Trust ---------- */
+  .trust { background: var(--ink); color: var(--porcelain); }
+  .trust .wrap { display: grid; grid-template-columns: 1.3fr .7fr; gap: clamp(40px, 7vw, 104px); align-items: center; }
+  .quote-mark { font-family: var(--serif); font-size: 5rem; line-height: .6; color: var(--brass-light); display: block; height: 40px; }
+  blockquote { margin: 0; }
+  blockquote p { font-family: var(--serif); font-weight: 500; font-size: clamp(1.625rem, 3.2vw, 2.375rem); line-height: 1.55; max-width: 18em; }
+  blockquote footer { margin-top: 28px; font-size: .9375rem; color: rgba(242, 243, 239, .7); display: flex; align-items: center; gap: 14px; }
+  blockquote footer::before { content: ""; width: 32px; height: 1.5px; background: var(--brass-light); }
+  .facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-left: 1px solid rgba(242, 243, 239, .2); }
+  .facts li { padding: 18px 0 18px 28px; border-bottom: 1px solid rgba(242, 243, 239, .12); }
+  .facts li:last-child { border-bottom: 0; }
+  .facts strong { display: block; font-family: var(--serif); font-size: 1.1875rem; font-weight: 700; color: #fff; }
+  .facts span { font-size: .875rem; color: rgba(242, 243, 239, .68); }
+
+  /* ---------- Contact ---------- */
+  .contact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 7vw, 104px); align-items: start; }
+  .contact h2 { font-size: var(--fs-3); }
+  .contact-lede { margin-top: 16px; color: var(--ink-soft); font-size: 1.0625rem; max-width: 24em; }
+  .email-box { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .email-link { font-family: var(--serif); font-weight: 700; font-size: clamp(1.25rem, 2.6vw, 1.75rem); text-decoration: none; border-bottom: 2px solid var(--brass); word-break: break-all; line-height: 1.4; }
+  .copy-btn { min-height: 40px; padding: 0 16px; font-size: .875rem; }
+  .copy-status { font-size: .875rem; color: var(--celadon); min-height: 1.5em; margin-top: 10px; }
+  .checklist { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: clamp(24px, 3.4vw, 36px); }
+  .checklist h3 { font-size: 1.3125rem; }
+  .checklist > p { margin-top: 8px; font-size: .9375rem; color: var(--ink-soft); }
+  .checklist ul { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 14px; }
+  .checklist li { display: grid; grid-template-columns: 24px 1fr; gap: 12px; font-size: .9375rem; line-height: 1.7; }
+  .checklist li svg { margin-top: 3px; color: var(--celadon); }
+  .checklist li b { font-weight: 500; }
+  .checklist li span { color: var(--ink-soft); display: block; font-size: .875rem; }
+  .checklist .btn { margin-top: 28px; width: 100%; }
+
+  .book-main { margin-top: 32px; }
+  .alt-contact { margin-top: 36px; font-size: .875rem; color: var(--ink-soft); }
+  .alt-contact + .email-box { margin-top: 8px; }
+
+  /* ---------- Booking dialog ---------- */
+  .book {
+    width: min(640px, calc(100% - 32px)); max-height: calc(100dvh - 32px);
+    padding: 0; border: 0; border-radius: 20px;
+    background: var(--porcelain); color: var(--ink);
+    box-shadow: 0 24px 80px rgba(30, 42, 68, .28);
+  }
+  .book::backdrop { background: rgba(30, 42, 68, .55); backdrop-filter: blur(3px); }
+  .book[open] { animation: bookIn .28s cubic-bezier(.2,.8,.2,1); }
+  .book[open]::backdrop { animation: fadeIn .28s ease; }
+  @keyframes bookIn { from { opacity: 0; transform: translateY(16px) scale(.98); } }
+  @keyframes fadeIn { from { opacity: 0; } }
+  .book-inner { padding: clamp(24px, 4vw, 40px); }
+  .book-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; margin-bottom: 24px; }
+  .book-head h2 { font-size: var(--fs-2); }
+  .book-head p { margin-top: 6px; font-size: .9375rem; color: var(--ink-soft); }
+  .book-close { background: none; border: 0; padding: 8px; margin: -6px -8px 0 0; cursor: pointer; color: var(--ink-soft); border-radius: 50%; }
+  .book-close:hover { background: var(--mist); color: var(--ink); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+  .field { display: grid; gap: 6px; margin-bottom: 6px; }
+  .field label { font-size: .9375rem; font-weight: 500; }
+  .field .opt { font-weight: 400; font-size: .8125rem; color: var(--celadon); margin-left: 4px; }
+  .field input, .field select, .field textarea {
+    width: 100%; font: 1rem/1.6 var(--sans); color: var(--ink);
+    background: #fff; border: 1px solid rgba(30, 42, 68, .28); border-radius: 10px;
+    padding: 10px 14px; min-height: 46px;
+  }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(160, 123, 50, .28); }
+  .field [aria-invalid="true"] { border-color: #A23B2A; }
+  .field textarea::placeholder { color: #8A93A6; }
+  .err { min-height: 1.4em; font-size: .8125rem; color: #A23B2A; line-height: 1.4; }
+  .book-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 12px; }
+  .book-done { text-align: left; }
+  .book-done > svg { color: var(--celadon); }
+  .book-done h3 { font-size: 1.3125rem; margin-top: 12px; outline: none; }
+  .book-done p { margin-top: 8px; font-size: .9375rem; color: var(--ink-soft); }
+  .book-done textarea { width: 100%; margin-top: 16px; font: .875rem/1.7 var(--sans); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; resize: none; }
+  body.dialog-open { overflow: hidden; }
+
+  footer.site { border-top: 1px solid var(--line); padding: 28px 0; font-size: .8125rem; color: var(--ink-soft); }
+  footer.site .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .hero .wrap, .about .wrap, .trust .wrap, .contact .wrap { grid-template-columns: 1fr; }
+    .about-portrait { aspect-ratio: auto; min-height: 260px; max-width: 420px; }
+    .service { grid-template-columns: 64px 1fr; }
+    .service-gets { grid-column: 2; }
+    .steps { grid-template-columns: 1fr 1fr; row-gap: 48px; }
+    .step:nth-child(2)::before { display: none; }
+    .facts { border-left: 0; border-top: 1px solid rgba(242, 243, 239, .2); }
+    .facts li { padding-left: 0; }
+  }
+  @media (max-width: 720px) {
+    .menu-btn { display: block; }
+    .nav-links {
+      display: none; position: absolute; top: 64px; left: 0; right: 0;
+      flex-direction: column; gap: 0; background: var(--porcelain);
+      border-bottom: 1px solid var(--line); padding: 8px var(--gutter) 16px;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { display: block; padding: 12px 0; font-size: 1rem; }
+    .nav-links .nav-cta { border-bottom: 0; color: var(--brass); }
+    .brand small { display: none; }
+    .hero-lede { font-size: 1.0625rem; }
+    .hero-actions .btn { flex: 1 1 auto; }
+    .service { grid-template-columns: 1fr; gap: 16px; }
+    .service-glyph { width: 48px; height: 48px; }
+    .service-gets { grid-column: auto; }
+    .steps { grid-template-columns: 1fr; row-gap: 0; }
+    .step { display: grid; grid-template-columns: 44px 1fr; column-gap: 20px; padding: 0 0 36px; }
+    .step::before { top: 44px; left: 21px; right: auto; bottom: 0; width: 1.5px; height: auto; display: block !important; }
+    .step:last-child { padding-bottom: 0; }
+    .step:last-child::before { display: none !important; }
+    .step h3 { margin-top: 8px; }
+    .step p { grid-column: 2; max-width: none; }
+    .pair { grid-template-columns: 1fr; }
+    .pair .plus { padding: 6px 0; }
+    .gua-read { flex-direction: column; align-items: flex-start; }
+    .field-row { grid-template-columns: 1fr; }
+    .book-actions .btn { flex: 1; }
+    .book-main { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Mobowork 技術命理顧問，回到頁首">
+      <svg class="brand-mark" viewBox="0 0 31 31" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M0 0h10v3h-10zM0 0h3v10h-3zM7 0h3v13h-3zM0 7h6v3h-6zM11 7h9v3h-9zM25 7h6v3h-6zM28 7h3v10h-3zM18 14h13v3h-13zM0 14h13v3h-13zM0 14h3v10h-3zM0 21h6v3h-6zM11 21h9v3h-9zM25 21h6v3h-6zM28 21h3v10h-3zM21 28h10v3h-10zM21 18h3v13h-3zM21 0h3v13h-3zM14 0h10v3h-10zM14 0h3v6h-3zM14 11h3v9h-3zM14 25h3v6h-3zM7 28h10v3h-10zM7 18h3v13h-3z"/></svg>
+      Mobowork <small>技術命理顧問</small>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">選單</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">關於安迪</a></li>
+      <li><a href="#services">服務項目</a></li>
+      <li><a href="#process">諮詢流程</a></li>
+      <li><a href="#trust">客戶回饋</a></li>
+      <li><a class="nav-cta" href="#contact" data-book>預約諮詢</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <p class="hero-role">安迪老師｜技術命理顧問</p>
+        <h1 id="hero-title"><span>數據告訴你怎麼做，</span><span>命理幫你看時機。</span></h1>
+        <p class="hero-lede">當市場分析與 AI 的建議都說得通，卻讓你更難下決定時，你需要的是另一個維度。我以十年以上的科技與 AI 實戰經驗，結合塔羅、八字、紫微與易經，陪你在轉職、創業、投資與企業佈局的關鍵時刻，做出更踏實的選擇。</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#contact" data-book>預約諮詢</a>
+          <a class="btn btn-ghost" href="#services">看服務項目</a>
+        </div>
+      </div>
+
+      <figure class="gua casting" id="gua" aria-labelledby="gua-name" style="margin:0">
+        <div class="gua-lines" id="guaLines" aria-hidden="true"></div>
+        <div class="gua-read">
+          <div>
+            <div class="gua-meta"><span id="guaNum"></span>　<span id="guaTri"></span></div>
+            <div class="gua-name" id="gua-name" aria-live="polite">—</div>
+            <div class="gua-meta">資料碼 <span class="gua-code" id="guaCode"></span></div>
+          </div>
+          <button class="btn btn-ghost cast-btn" id="castBtn" type="button">隨機起一卦</button>
+        </div>
+        <figcaption class="gua-note">卦由下往上生成，陽爻記為 1、陰爻記為 0。六個爻，正好是一組可以存檔、比對與回顧的資料。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="about-portrait" role="img" aria-label="安迪老師，技術命理顧問">
+        <span class="big" aria-hidden="true">安</span>
+        <div class="name">安迪老師</div>
+        <div class="title">Mobowork 創辦人</div>
+      </div>
+      <div>
+        <h2 id="about-title">命理不是迷信，是一套觀察變化的古老框架。</h2>
+        <div class="about-body">
+          <p>我是安迪，在科技、數據與 AI 產業工作超過十年，同時長年研習塔羅、八字、紫微與易經。這兩條路走久了，我越來越確定：<strong>理性分析與東方智慧，本來就可以互相補足。</strong></p>
+          <p>用科技的方法整理命理，它就能成為和數據並列的決策工具。我以 AI 精準排盤，記錄每一次占問，再回頭對照實際走向。每一次判斷都有依據、可以追蹤，也能被檢驗。</p>
+        </div>
+        <div class="pair">
+          <div>
+            <h3>理性的那一半</h3>
+            <p>十年以上科技、數據與 AI 實戰，回答「怎麼做」。</p>
+          </div>
+          <div class="plus" aria-hidden="true">＋</div>
+          <div>
+            <h3>直覺的那一半</h3>
+            <p>塔羅、八字、紫微與易經，回答「時機如何」。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="services" id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="services-title">依你要決定的事，選擇合適的方法</h2>
+        <p>短期趨勢用塔羅，長期佈局看八字與紫微，遇到需要拍板的關鍵決策，則以易經搭配 AI 技術諮詢。</p>
+      </div>
+
+      <div class="services-list">
+        <article class="service">
+          <svg class="service-glyph" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="14" y="10" width="26" height="40" rx="3" transform="rotate(-8 27 30)"/>
+            <rect x="24" y="14" width="26" height="40" rx="3" fill="#F2F3EF" transform="rotate(6 37 34)"/>
+            <circle cx="37" cy="34" r="6" transform="rotate(6 37 34)"/>
+          </svg>
+          <div>
+            <h3>塔羅占卜</h3>
+            <p class="sub">近期趨勢讀牌</p>
+            <p class="desc">針對一個具體問題讀牌，看清未來幾個月的走向。適合心裡已有選項、想確認方向，或正卡在某個關口的時候。</p>
+          </div>
+          <div class="service-gets">
+            <h4>你會得到</h4>
+            <ul>
+              <li>未來 1–3 個月的趨勢變化</li>
+              <li>可能出現的阻礙</li>
+              <li>對應每個阻礙的具體建議</li>
+            </ul>
+            <p class="who">適合個人</p>
+          </div>
+        </article>
+
+        <article class="service">
+          <svg class="service-glyph" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="8" y="12" width="10" height="40" rx="2"/>
+            <rect x="21" y="12" width="10" height="40" rx="2"/>
+            <rect x="34" y="12" width="10" height="40" rx="2"/>
+            <rect x="47" y="12" width="10" height="40" rx="2"/>
+            <path d="M8 32h49"/>
+          </svg>
+          <div>
+            <h3>八字 + 紫微占卜</h3>
+            <p class="sub">生命藍圖與運程佈局</p>
+            <p class="desc">以出生資料精準排盤，看清個人或經營者的先天格局與未來幾年的運程起伏，把重大計畫排在對的時間點上。</p>
+          </div>
+          <div class="service-gets">
+            <h4>適合這些規劃</h4>
+            <ul>
+              <li>個人：職涯轉換、創業、置產</li>
+              <li>企業主：年度策略、合夥人搭配、重大時程</li>
+            </ul>
+            <p class="who">適合個人與企業主</p>
+          </div>
+        </article>
+
+        <article class="service">
+          <svg class="service-glyph" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
+            <rect x="10" y="10" width="44" height="4" rx="1"/>
+            <rect x="10" y="18" width="19" height="4" rx="1"/><rect x="35" y="18" width="19" height="4" rx="1"/>
+            <rect x="10" y="26" width="44" height="4" rx="1"/>
+            <rect x="10" y="34" width="44" height="4" rx="1"/>
+            <rect x="10" y="42" width="19" height="4" rx="1"/><rect x="35" y="42" width="19" height="4" rx="1"/>
+            <rect x="10" y="50" width="44" height="4" rx="1"/>
+          </svg>
+          <div>
+            <h3>易經占卜 + AI 技術諮詢</h3>
+            <p class="sub">關鍵決策 · 個人與企業</p>
+            <p class="desc">以十年以上科技、數據與 AI 產業實戰經驗，提供可以落地的顧問建議，再輔以易經卦象觀察，讓策略與時機一起被考慮。</p>
+          </div>
+          <div class="service-gets">
+            <h4>從兩個面向給出策略參考</h4>
+            <ul>
+              <li>怎麼做：科技、數據與 AI 的具體建議</li>
+              <li>時機如何：卦象呈現的進退與節奏</li>
+            </ul>
+            <p class="who">適合個人與企業主</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="process" id="process" aria-labelledby="process-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="process-title">每一次諮詢，都會留下紀錄</h2>
+        <p>從提出問題到回顧結果，四個步驟讓命理不只是一次性的答案，而是可以累積、校準的決策依據。</p>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num" aria-hidden="true">1</span>
+          <h3>說明你的問題</h3>
+          <p>來信簡述你要決定的事、時間範圍與背景，我會建議最適合的方法。</p>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">2</span>
+          <h3>排盤與起卦</h3>
+          <p>依出生資料以 AI 精準排盤；塔羅與易經則針對單一問題起卦。</p>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">3</span>
+          <h3>解讀與建議</h3>
+          <p>一對一說明趨勢、阻礙與應對方式，並給出具體可執行的下一步。</p>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">4</span>
+          <h3>紀錄與回顧</h3>
+          <p>每次占問都會存檔，之後對照實際走向，讓下一次判斷更準。</p>
+        </li>
+      </ol>
+      <p class="loop-note">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4h-4"/></svg>
+        回顧之後，新的問題會從第一步重新開始。紀錄越完整，參考價值越高。
+      </p>
+    </div>
+  </section>
+
+  <!-- Trust -->
+  <section class="trust" id="trust" aria-labelledby="trust-title">
+    <div class="wrap">
+      <div>
+        <h2 id="trust-title" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">客戶回饋</h2>
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>
+          <p>安迪老師幫我提前預警 3 個月後的風險，成功讓我的企業完成轉型。</p>
+          <footer>日本新創 Fliqt.io 總經理</footer>
+        </blockquote>
+      </div>
+      <ul class="facts">
+        <li><strong>十年以上產業實戰</strong><span>科技、數據與 AI 領域的第一線經驗</span></li>
+        <li><strong>四套系統交叉參照</strong><span>塔羅、八字、紫微與易經</span></li>
+        <li><strong>每次占問皆有紀錄</strong><span>可以追蹤、回顧，也能被檢驗</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <div>
+        <h2 id="contact-title">有一個決定，想多看一個角度？</h2>
+        <p class="contact-lede">填寫預約表單，留下你方便的時間與想討論的事。我會以 Email 回覆適合的諮詢方式與安排。</p>
+        <button class="btn btn-solid book-main" type="button" data-book>填寫預約表單</button>
+        <p class="alt-contact">也可以直接寫信給我</p>
+        <div class="email-box">
+          <a class="email-link" id="emailLink" href="mailto:nycweb9@protonmail.com?subject=%E8%AB%AE%E8%A9%A2%E9%A0%90%E7%B4%84">nycweb9@protonmail.com</a>
+          <button class="btn btn-ghost copy-btn" id="copyBtn" type="button">複製 Email</button>
+        </div>
+        <p class="copy-status" id="copyStatus" role="status"></p>
+      </div>
+
+      <div class="checklist">
+        <h3>填寫訴求時可以附上</h3>
+        <p>資料越清楚，解讀越貼近你的處境。</p>
+        <ul>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+            <div><b>你想決定的事</b><span>例如是否轉職、何時創業、要不要和某人合夥</span></div>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+            <div><b>時間範圍</b><span>近 1–3 個月，或未來一年以上的佈局</span></div>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+            <div><b>個人或企業</b><span>企業諮詢請簡述產業與目前階段</span></div>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+            <div><b>出生年月日與時辰</b><span>僅八字與紫微需要</span></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dialog class="book" id="bookDialog" aria-labelledby="bookTitle">
+  <div class="book-inner">
+    <div class="book-head">
+      <div>
+        <h2 id="bookTitle">預約諮詢</h2>
+        <p>填好後送出，我會以 Email 回覆確認諮詢時間。</p>
+      </div>
+      <button class="book-close" type="button" data-close aria-label="關閉預約表單">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <form id="bookForm" novalidate>
+      <div class="field-row">
+        <div class="field">
+          <label for="fName">姓名</label>
+          <input id="fName" name="name" type="text" autocomplete="name" required>
+          <p class="err" id="fName-err"></p>
+        </div>
+        <div class="field">
+          <label for="fEmail">Email</label>
+          <input id="fEmail" name="email" type="email" autocomplete="email" inputmode="email" required>
+          <p class="err" id="fEmail-err"></p>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="fDate">希望日期</label>
+          <input id="fDate" name="date" type="date" required>
+          <p class="err" id="fDate-err"></p>
+        </div>
+        <div class="field">
+          <label for="fSlot">希望時段</label>
+          <select id="fSlot" name="slot" required>
+            <option value="">請選擇</option>
+            <option>上午 10:00–12:00</option>
+            <option>下午 14:00–17:00</option>
+            <option>晚上 19:00–21:00</option>
+          </select>
+          <p class="err" id="fSlot-err"></p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fService">想諮詢的服務 <span class="opt">選填</span></label>
+        <select id="fService" name="service">
+          <option value="">還不確定，請老師建議</option>
+          <option>塔羅占卜｜近期趨勢讀牌</option>
+          <option>八字 + 紫微占卜｜生命藍圖與運程佈局</option>
+          <option>易經占卜 + AI 技術諮詢｜關鍵決策</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="fNeed">你的訴求</label>
+        <textarea id="fNeed" name="need" rows="5" required placeholder="想決定的事、時間範圍、個人或企業。八字與紫微請附出生年月日與時辰。"></textarea>
+        <p class="err" id="fNeed-err"></p>
+      </div>
+
+      <div class="book-actions">
+        <button class="btn btn-ghost" type="button" data-close>取消</button>
+        <button class="btn btn-solid" type="submit">送出預約</button>
+      </div>
+    </form>
+
+    <div class="book-done" id="bookDone" hidden>
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6"/></svg>
+      <h3 tabindex="-1" id="doneTitle">預約內容已帶入你的郵件程式</h3>
+      <p>請在郵件程式中按下寄出，預約才算完成。如果郵件程式沒有開啟，請複製下方內容，寄到 nycweb9@protonmail.com。</p>
+      <textarea id="doneText" rows="7" readonly aria-label="預約內容"></textarea>
+      <div class="book-actions">
+        <button class="btn btn-ghost" type="button" id="copyDone">複製預約內容</button>
+        <button class="btn btn-solid" type="button" data-close>完成</button>
+      </div>
+      <p class="copy-status" id="doneStatus" role="status"></p>
+    </div>
+  </div>
+</dialog>
+
+<footer class="site">
+  <div class="wrap">
+    <span>© <span id="year">2026</span> Mobowork｜安迪 技術命理顧問</span>
+    <a href="#top">回到頁首</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ----- Hexagram data -----
+  // Trigrams as [bottom, middle, top], 1 = 陽, 0 = 陰
+  const TRI = {
+    "乾": [1,1,1], "震": [1,0,0], "坎": [0,1,0], "艮": [0,0,1],
+    "坤": [0,0,0], "巽": [0,1,1], "離": [1,0,1], "兌": [1,1,0]
+  };
+  const NATURE = { "乾":"天", "震":"雷", "坎":"水", "艮":"山", "坤":"地", "巽":"風", "離":"火", "兌":"澤" };
+  const ORDER = ["乾","震","坎","艮","坤","巽","離","兌"];
+  // King Wen number by [upper][lower], both in ORDER
+  const KW = [
+    [1,25,6,33,12,44,13,10],
+    [34,51,40,62,16,32,55,54],
+    [5,3,29,39,8,48,63,60],
+    [26,27,4,52,23,18,22,41],
+    [11,24,7,15,2,46,36,19],
+    [9,42,59,53,20,57,37,61],
+    [14,21,64,56,35,50,30,38],
+    [43,17,47,31,45,28,49,58]
+  ];
+  const NAMES = ("乾 坤 屯 蒙 需 訟 師 比 小畜 履 泰 否 同人 大有 謙 豫 隨 蠱 臨 觀 噬嗑 賁 剝 復 无妄 大畜 頤 大過 坎 離 咸 恆 遯 大壯 晉 明夷 家人 睽 蹇 解 損 益 夬 姤 萃 升 困 井 革 鼎 震 艮 漸 歸妹 豐 旅 巽 兌 渙 節 中孚 小過 既濟 未濟").split(" ");
+  const POS = ["初爻","二爻","三爻","四爻","五爻","上爻"];
+
+  const gua = document.getElementById("gua");
+  const linesEl = document.getElementById("guaLines");
+  const nameEl = document.getElementById("gua-name");
+  const triEl = document.getElementById("guaTri");
+  const codeEl = document.getElementById("guaCode");
+  const numEl = document.getElementById("guaNum");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Build six rows once (column-reverse puts 初爻 at the bottom)
+  const bars = POS.map((p, i) => {
+    const row = document.createElement("div");
+    row.className = "gua-row";
+    row.innerHTML = '<span>' + p + '</span><div class="bar" style="--i:' + i + '"></div><span class="bit"></span>';
+    linesEl.appendChild(row);
+    return { bar: row.querySelector(".bar"), bit: row.querySelector(".bit") };
+  });
+
+  function triName(bits) {
+    return ORDER.find(k => TRI[k].join("") === bits.join(""));
+  }
+
+  let current = null;
+  function render(lines, animate) {
+    const lower = triName(lines.slice(0, 3));
+    const upper = triName(lines.slice(3));
+    const n = KW[ORDER.indexOf(upper)][ORDER.indexOf(lower)];
+    const name = NAMES[n - 1];
+    const fullName = upper === lower ? name + "為" + NATURE[upper] : NATURE[upper] + NATURE[lower] + name;
+
+    lines.forEach((v, i) => {
+      bars[i].bar.classList.toggle("yin", v === 0);
+      bars[i].bar.classList.toggle("changed", current !== null && current[i] !== v);
+      bars[i].bit.textContent = v;
+    });
+    nameEl.textContent = fullName;
+    numEl.textContent = "第 " + n + " 卦";
+    triEl.textContent = "上" + upper + "下" + lower;
+    codeEl.textContent = lines.slice().reverse().join("");
+    current = lines;
+
+    if (animate && !reduce) {
+      gua.classList.remove("casting");
+      void gua.offsetWidth;
+      gua.classList.add("casting");
+    }
+  }
+
+  function cast() {
+    return Array.from({ length: 6 }, () => (Math.random() < 0.5 ? 0 : 1));
+  }
+
+  // Open with 地天泰 (泰：通達、平衡)
+  render([1,1,1,0,0,0], true);
+  document.getElementById("castBtn").addEventListener("click", () => render(cast(), false));
+
+  // ----- Nav -----
+  const nav = document.getElementById("nav");
+  const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 8);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  const menuBtn = document.getElementById("menuBtn");
+  const links = document.getElementById("navLinks");
+  menuBtn.addEventListener("click", () => {
+    const open = links.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", open);
+    menuBtn.textContent = open ? "關閉" : "選單";
+  });
+  links.addEventListener("click", e => {
+    if (e.target.tagName === "A") {
+      links.classList.remove("open");
+      menuBtn.setAttribute("aria-expanded", "false");
+      menuBtn.textContent = "選單";
+    }
+  });
+
+  // ----- Booking dialog -----
+  const EMAIL = "nycweb9@protonmail.com";
+  const dlg = document.getElementById("bookDialog");
+  const form = document.getElementById("bookForm");
+  const done = document.getElementById("bookDone");
+  const doneText = document.getElementById("doneText");
+  const doneStatus = document.getElementById("doneStatus");
+  const dateInput = document.getElementById("fDate");
+  let lastTrigger = null;
+
+  const pad = n => String(n).padStart(2, "0");
+  const today = new Date();
+  dateInput.min = today.getFullYear() + "-" + pad(today.getMonth() + 1) + "-" + pad(today.getDate());
+
+  function openBook(e) {
+    if (e) e.preventDefault();
+    lastTrigger = document.activeElement;
+    links.classList.remove("open");
+    menuBtn.setAttribute("aria-expanded", "false");
+    menuBtn.textContent = "選單";
+    if (!done.hidden) form.reset();
+    form.hidden = false;
+    done.hidden = true;
+    if (typeof dlg.showModal === "function") {
+      dlg.showModal();
+      document.body.classList.add("dialog-open");
+      document.getElementById("fName").focus();
+    } else {
+      location.href = "#contact";
+    }
+  }
+  function closeBook() { dlg.close(); }
+
+  document.querySelectorAll("[data-book]").forEach(el => el.addEventListener("click", openBook));
+  dlg.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", closeBook));
+  dlg.addEventListener("click", e => { if (e.target === dlg) closeBook(); });
+  dlg.addEventListener("close", () => {
+    document.body.classList.remove("dialog-open");
+    if (lastTrigger) lastTrigger.focus();
+  });
+
+  const RULES = {
+    fName: v => v.trim() ? "" : "請填寫姓名",
+    fEmail: v => !v.trim() ? "請填寫 Email" : (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? "" : "Email 格式不正確，例如 name@example.com"),
+    fDate: v => !v ? "請選擇希望日期" : (v < dateInput.min ? "請選擇今天或之後的日期" : ""),
+    fSlot: v => v ? "" : "請選擇希望時段",
+    fNeed: v => v.trim().length >= 10 ? "" : "請用至少 10 個字描述你的訴求"
+  };
+  function check(id) {
+    const el = document.getElementById(id);
+    const msg = RULES[id](el.value);
+    document.getElementById(id + "-err").textContent = msg;
+    el.setAttribute("aria-invalid", msg ? "true" : "false");
+    if (msg) el.setAttribute("aria-describedby", id + "-err"); else el.removeAttribute("aria-describedby");
+    return !msg;
+  }
+  Object.keys(RULES).forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener("blur", () => { if (el.value) check(id); });
+    el.addEventListener("input", () => { if (el.getAttribute("aria-invalid") === "true") check(id); });
+  });
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const bad = Object.keys(RULES).filter(id => !check(id));
+    if (bad.length) { document.getElementById(bad[0]).focus(); return; }
+
+    const f = Object.fromEntries(new FormData(form));
+    const subject = "諮詢預約｜" + f.name.trim();
+    const body = [
+      "姓名：" + f.name.trim(),
+      "Email：" + f.email.trim(),
+      "希望時間：" + f.date + "　" + f.slot,
+      "諮詢服務：" + (f.service || "還不確定，請老師建議"),
+      "",
+      "訴求：",
+      f.need.trim()
+    ].join("\n");
+
+    doneText.value = "主旨：" + subject + "\n\n" + body;
+    form.hidden = true;
+    done.hidden = false;
+    document.getElementById("doneTitle").focus();
+    location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  });
+
+  document.getElementById("copyDone").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(doneText.value);
+      doneStatus.textContent = "已複製預約內容";
+    } catch (err) {
+      doneText.select();
+      doneStatus.textContent = "請按 Ctrl+C 或 ⌘+C 複製已選取的內容";
+    }
+  });
+
+  // ----- Copy email -----
+  const status = document.getElementById("copyStatus");
+  document.getElementById("copyBtn").addEventListener("click", async () => {
+    const email = "nycweb9@protonmail.com";
+    try {
+      await navigator.clipboard.writeText(email);
+      status.textContent = "已複製 Email";
+    } catch (e) {
+      status.textContent = "無法自動複製，請手動選取：" + email;
+    }
+    clearTimeout(status._t);
+    status._t = setTimeout(() => { status.textContent = ""; }, 3000);
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
