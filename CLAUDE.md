@@ -27,7 +27,7 @@ Fonts (Noto Serif TC / Noto Sans TC) load from Google Fonts, so previews need ne
 
 ## Things to keep in mind
 
-- The contact email must not appear anywhere visible on the page; bookings go only through the form. The address is still embedded in `FORM_ENDPOINT` until it is replaced with the FormSubmit alias issued after activation.
+- Bookings go through the form, which forwards to nycweb9@protonmail.com via `FORM_ENDPOINT` (until it is replaced with the FormSubmit alias issued after activation). The only visible email is the deliberately low-key nycweb3@protonmail.com in the footer; keep it out of the hero and contact sections.
 - FormSubmit only forwards after the owner clicks the activation link sent on the first real submission. Test the form flow by stubbing `window.fetch` in the browser rather than sending real submissions.
 - The logo is drawn on a 31×31 grid (stroke 3, pitch 7, crossing gap 1) as one `<path>`; it is inlined in the nav (rendered at 31px so each unit is one pixel), as the data-URI favicon in `<head>`, and in `logo.svg`. Change all three together.
 - Numbered markers are used only in `#process`, which is a real sequence; the services are deliberately unnumbered.
