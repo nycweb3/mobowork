@@ -641,7 +641,7 @@
     <div class="book-done" id="bookDone" hidden>
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6"/></svg>
       <h3 tabindex="-1" id="doneTitle">預約已送出</h3>
-      <p>謝謝你，<span id="doneName"></span>。我會以 Email 回覆確認諮詢時間，回覆會寄到 <span id="doneEmail"></span>。</p>
+      <p>謝謝你，<span id="doneName"></span>。我會以 Email 回覆確認諮詢時間。</p>
       <div class="book-actions">
         <button class="btn btn-solid" type="button" data-close>完成</button>
       </div>
@@ -757,7 +757,7 @@
   });
 
   // ----- Booking dialog -----
-  // FormSubmit forwards each booking to this inbox.
+  // FormSubmit forwards each booking to the owner's inbox; the alias keeps the address out of the source.
   const FORM_ENDPOINT = "https://formsubmit.co/ajax/513d470d182f308910f7a113ccd3dd3b";
   const dlg = document.getElementById("bookDialog");
   const form = document.getElementById("bookForm");
@@ -859,7 +859,6 @@
 
     if (res.ok && String(data.success) === "true") {
       document.getElementById("doneName").textContent = payload["姓名"];
-      document.getElementById("doneEmail").textContent = payload.email;
       form.hidden = true;
       done.hidden = false;
       document.getElementById("doneTitle").focus();

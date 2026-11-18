@@ -27,7 +27,8 @@ Fonts (Noto Serif TC / Noto Sans TC) load from Google Fonts, so previews need ne
 
 ## Things to keep in mind
 
-- Bookings are forwarded to email-removed@example.invalid via `FORM_ENDPOINT` (until it is replaced with the FormSubmit alias issued after activation). The address is not shown anywhere on the page; the booking form is the only contact route.
+- `FORM_ENDPOINT` uses the FormSubmit alias, not the owner's email address. Never put an email address in the page, source or commit messages; the booking form is the only contact route, and the success message does not echo the visitor's email.
+- Commits in this repo use the GitHub noreply address (local `user.email`), and `main` is protected against force pushes and deletion.
 - FormSubmit only forwards after the owner clicks the activation link sent on the first real submission. Test the form flow by stubbing `window.fetch` in the browser rather than sending real submissions.
 - The logo is drawn on a 31×31 grid (stroke 3, pitch 7, crossing gap 1) as one `<path>`; it is inlined in the nav (rendered at 31px so each unit is one pixel), as the data-URI favicon in `<head>`, and in `logo.svg`. Change all three together.
 - Numbered markers are used only in `#process`, which is a real sequence; the services are deliberately unnumbered.
